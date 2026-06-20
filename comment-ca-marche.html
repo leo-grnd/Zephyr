@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment ça marche — ZÉPHYR</title>
+    <meta name="description" content="Comprendre ZÉPHYR : conditions en direct, pluie minute, prévision et radar, comparaison de modèles, climat, vent et vigilance — et d'où viennent les données.">
+    <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f1e8" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <script>(function(){try{var t=localStorage.getItem('zephyr-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="comment-ca-marche.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <a class="logo" href="index.html">ZÉPHY<span>R</span></a>
+                <div class="tagline">— Comment ça marche</div>
+            </div>
+            <div class="meta">
+                <div class="meta-right">
+                    <a class="nav-link" href="https://leo-grnd.github.io/hub/">← Tous les outils</a>
+                    <a class="nav-link" href="index.html">← Retour à l'outil</a>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Changer de thème" title="Changer de thème">
+                        <span id="themeIcon" aria-hidden="true">☾</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero hiw-hero">
+            <h1>La météo, <em>en grand détail.</em></h1>
+            <p>ZÉPHYR rassemble en une page tout ce qu'on veut savoir sur le temps qu'il fait et qu'il fera :
+               du <strong>direct</strong> au <strong>14 jours</strong>, avec radar animé, comparaison de modèles,
+               climat, vent et alertes. Gratuit, sans pub, sans compte.</p>
+        </section>
+
+        <section class="stats" aria-label="Chiffres clés">
+            <div class="stat"><div class="stat-num" data-count="14">0</div><div class="stat-lbl">jours de prévision</div></div>
+            <div class="stat"><div class="stat-num" data-count="4">0</div><div class="stat-lbl">modèles comparés</div></div>
+            <div class="stat"><div class="stat-num" data-count="15">0</div><div class="stat-lbl">min — nowcast pluie</div></div>
+            <div class="stat"><div class="stat-num" data-count="10">0</div><div class="stat-lbl">ans — normales climat</div></div>
+        </section>
+
+        <p class="flow-intro">Tout ce qu'il faut savoir <span class="arrow">↓</span></p>
+
+        <ol class="pipeline">
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">01</span><h2>Le direct, en détail</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>Choisis un lieu (position, recherche ou <strong>ville favorite</strong>) et tout se remplit :
+                           température et <strong>ressenti</strong>, état du ciel, vent et rafales, humidité,
+                           point de rosée, pression, nébulosité, visibilité, UV.</p>
+                        <p>Et la <em>pluie dans l'heure</em> minute par minute, pour savoir s'il faut sortir maintenant.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="vchips">
+                            <span class="vchip">🌡️ Ressenti</span>
+                            <span class="vchip">💨 Vent &amp; rafales</span>
+                            <span class="vchip">🌧️ Pluie minute</span>
+                            <span class="vchip">⭐ Favoris</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">02</span><h2>Prévoir : heure par heure, jour par jour</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>Un <strong>méteogramme</strong> sur 48 h (courbe de température + précipitations) et une
+                           prévision sur <strong>14 jours</strong> avec min/max, pluie, vent et lever/coucher.</p>
+                        <p>Le <strong>radar animé</strong> rejoue les 2 dernières heures de précipitations et leur
+                           tendance proche.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="vchips">
+                            <span class="vchip">📈 Méteogramme 48 h</span>
+                            <span class="vchip">🗓️ 14 jours</span>
+                            <span class="vchip">📡 Radar animé</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">03</span><h2>Aller plus loin : modèles, climat, vent</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p><strong>Comparaison de modèles</strong> (ECMWF, GFS, ICON, Météo-France) : plus les courbes
+                           divergent, plus la prévision est <em>incertaine</em>.</p>
+                        <p><strong>Climat</strong> : la température du jour comparée à la <em>normale de saison</em>
+                           (≈ 10 ans d'archives). <strong>Vent</strong> : rose des vents, Beaufort et vent en altitude
+                           (10 à 180 m).</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="vchips">
+                            <span class="vchip">🔀 4 modèles</span>
+                            <span class="vchip">🌡️ Anomalie climat</span>
+                            <span class="vchip">🧭 Rose des vents</span>
+                            <span class="vchip">🪂 Vent en altitude</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">04</span><h2>Alertes &amp; vigilance</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>Si un <strong>token Météo-France</strong> est configuré, ZÉPHYR affiche la
+                           <strong>vigilance officielle</strong>. Sinon, il calcule lui-même des alertes
+                           (vent violent, fortes pluies, canicule, grand froid) à partir des prévisions.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="badges">
+                            <span class="badge">🛡️ Vigilance officielle</span>
+                            <span class="badge">💨 Vent</span>
+                            <span class="badge">🌧️ Pluies</span>
+                            <span class="badge">🌡️ Canicule / froid</span>
+                        </div>
+                        <p class="note">La vigilance officielle nécessite une clé d'API Météo-France (compte gratuit).
+                           Sans clé, les alertes calculées prennent le relais — le site reste complet.</p>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">05</span><h2>D'où viennent les données</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>Prévisions, nowcast, modèles et archives : <code>open-meteo.com</code> (sans clé). Radar :
+                           <code>RainViewer</code> (sans clé), fond de carte OpenStreetMap. Vigilance :
+                           <code>Météo-France</code> (clé optionnelle).</p>
+                        <p>Tout tourne <strong>dans ton navigateur</strong> — aucun serveur, aucun traceur, cache
+                           hors-ligne. La position sert seulement à interroger les API.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="badges">
+                            <span class="badge">Open-Meteo</span>
+                            <span class="badge">RainViewer</span>
+                            <span class="badge">Météo-France</span>
+                            <span class="badge">100% navigateur</span>
+                            <span class="badge">Aucun traceur</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ol>
+
+        <section class="outro card reveal">
+            <h2>Et c'est tout — <em>côté navigateur.</em></h2>
+            <p>Pas de serveur, pas de build. Du HTML, du CSS, du JavaScript et des graphiques dessinés à la main,
+               déployables tels quels sur GitHub&nbsp;Pages.</p>
+            <a class="cta" href="index.html">Voir la météo →</a>
+        </section>
+
+        <footer>
+            Projet indépendant · données : open-meteo.com · RainViewer · Météo-France.
+        </footer>
+    </div>
+
+    <script>
+    (function () {
+        var icon = document.getElementById('themeIcon');
+        function apply(t) {
+            if (t === 'light') { document.documentElement.setAttribute('data-theme', 'light'); icon.textContent = '☀'; }
+            else { document.documentElement.removeAttribute('data-theme'); icon.textContent = '☾'; }
+        }
+        apply(localStorage.getItem('zephyr-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+        document.getElementById('themeToggle').addEventListener('click', function () {
+            var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            localStorage.setItem('zephyr-theme', next); apply(next);
+        });
+        var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var reveals = document.querySelectorAll('.reveal');
+        if (reduce || !('IntersectionObserver' in window)) { reveals.forEach(function (el) { el.classList.add('in'); }); }
+        else { var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.18 }); reveals.forEach(function (el) { io.observe(el); }); }
+        var nums = document.querySelectorAll('.stat-num[data-count]');
+        function countUp(el) { var target = parseInt(el.getAttribute('data-count'), 10); if (reduce) { el.textContent = target.toLocaleString('fr-FR'); return; } var start = null, dur = 1100; function tick(ts) { if (start === null) start = ts; var p = Math.min(1, (ts - start) / dur); el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString('fr-FR'); if (p < 1) requestAnimationFrame(tick); } requestAnimationFrame(tick); }
+        if (!('IntersectionObserver' in window)) { nums.forEach(countUp); }
+        else { var io2 = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); io2.unobserve(e.target); } }); }, { threshold: 0.6 }); nums.forEach(function (el) { io2.observe(el); }); }
+    })();
+    </script>
+</body>
+</html>
