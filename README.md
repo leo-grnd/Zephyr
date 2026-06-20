@@ -32,7 +32,7 @@ python -m http.server 8500 --directory .
 
 ## Déploiement
 
-GitHub Pages depuis `main` (racine), `.nojekyll`. Servi à `https://leo-grnd.github.io/Weather/`.
+GitHub Pages depuis `main` (racine), `.nojekyll`. Servi à `https://leo-grnd.github.io/Zephyr/`.
 
 ## Licence
 
