@@ -1,7 +1,7 @@
 // ZÉPHYR service worker — network-first pour le shell, stale-while-revalidate
 // pour les CDN (fonts, Leaflet), bypass total pour les API et tuiles.
 // Bump VERSION à chaque release.
-const VERSION = 'zephyr-v3';
+const VERSION = 'zephyr-v4';
 const SHELL = [
   './',
   './index.html',
