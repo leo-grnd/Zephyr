@@ -1,0 +1,17 @@
+{
+  "name": "ZÉPHYR — Météo ultra-précise",
+  "short_name": "ZÉPHYR",
+  "description": "Tableau de bord météo complet : conditions en direct, radar animé, prévision 14 jours, modèles, vent et vigilance.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "fr",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "categories": ["weather", "utilities"]
+}
