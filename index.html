@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZÉPHYR — Météo ultra-précise</title>
+    <meta name="description" content="Tableau de bord météo complet : conditions en direct, pluie minute par minute, prévision horaire et 14 jours, radar animé, comparaison de modèles, climat, vent et vigilance. Sans pub, sans compte.">
+    <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f1e8" media="(prefers-color-scheme: light)">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ZÉPHYR — Météo ultra-précise">
+    <meta property="og:description" content="Conditions en direct, radar animé, prévision 14 jours, comparaison de modèles, vent et vigilance.">
+    <meta property="og:image" content="og-image.svg">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="manifest" href="manifest.webmanifest">
+
+    <script>(function(){try{var t=localStorage.getItem('zephyr-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.open-meteo.com">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <div class="logo">ZÉPHY<span>R</span></div>
+                <div class="tagline">— Météo · Temps réel</div>
+            </div>
+            <div class="meta">
+                <div class="meta-right">
+                    <a class="nav-link" href="https://leo-grnd.github.io/hub/">← Tous les outils</a>
+                    <a class="nav-link" href="comment-ca-marche.html">Comment ça marche →</a>
+                    <div id="status" data-state="cache"><span class="pulse" aria-hidden="true"></span>Open-Meteo</div>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Changer de thème" title="Changer de thème">
+                        <span id="themeIcon" aria-hidden="true">☾</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Localisation + unités -->
+        <section class="card loc-card" aria-label="Localisation et unités">
+            <div class="loc-row">
+                <button id="geo-btn" class="geo-btn" type="button">📍 Ma position</button>
+                <div class="search-wrap">
+                    <input id="search-input" class="search-input" type="text" placeholder="Rechercher une ville…" autocomplete="off" aria-label="Rechercher une ville">
+                    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+                </div>
+                <button id="fav-add" class="fav-add" type="button" hidden>★ Ajouter aux favoris</button>
+            </div>
+            <div class="favs" id="favs"></div>
+            <div class="place">
+                <span class="place-name" id="place-name">—</span>
+                <span class="place-sub" id="place-sub"></span>
+            </div>
+            <div class="units" id="units" aria-label="Unités"></div>
+        </section>
+
+        <!-- Conditions actuelles (hero) -->
+        <section class="card current" aria-label="Conditions actuelles">
+            <div class="cur-main">
+                <div class="cur-icon" id="cur-icon" aria-hidden="true"></div>
+                <div class="cur-core">
+                    <div class="cur-temp" id="cur-temp">—</div>
+                    <div class="cur-label" id="cur-label">—</div>
+                    <div class="cur-feels" id="cur-feels">—</div>
+                </div>
+                <div class="cur-side">
+                    <div class="cur-hilo" id="cur-hilo">—</div>
+                    <div class="cur-wind" id="cur-wind">—</div>
+                </div>
+            </div>
+            <div class="cur-stats">
+                <div class="cs"><span>Humidité</span><b id="cur-humidity">—</b></div>
+                <div class="cs"><span>Point de rosée</span><b id="cur-dewpoint">—</b></div>
+                <div class="cs"><span>Pression</span><b id="cur-pressure">—</b></div>
+                <div class="cs"><span>Nébulosité</span><b id="cur-cloud">—</b></div>
+                <div class="cs"><span>Visibilité</span><b id="cur-visibility">—</b></div>
+                <div class="cs"><span>UV</span><b id="cur-uv">—</b></div>
+            </div>
+        </section>
+
+        <div class="grid-2">
+            <!-- Pluie dans l'heure -->
+            <section class="card" id="nowcast-card">
+                <div class="section-head">→ Pluie dans l'heure</div>
+                <div class="nowcast-phrase" id="nowcast-phrase">—</div>
+                <div class="chart-wrap" id="nowcast-chart"></div>
+            </section>
+
+            <!-- Alertes -->
+            <section class="card" id="alerts-card">
+                <div class="section-head">→ Alertes <span class="src" id="alerts-source"></span></div>
+                <div class="alerts-list" id="alerts-list"></div>
+            </section>
+        </div>
+
+        <!-- Prévision horaire -->
+        <section class="card">
+            <div class="section-head">→ Prévision horaire (48 h) — température &amp; précipitations</div>
+            <div class="chart-wrap" id="hourly-chart"></div>
+        </section>
+
+        <!-- Prévision 14 jours -->
+        <section class="card">
+            <div class="section-head">→ Prévision 14 jours</div>
+            <div class="daily-list" id="daily-list"></div>
+        </section>
+
+        <!-- Radar animé -->
+        <section class="card" id="radar-card">
+            <div class="section-head">→ Radar de précipitations
+                <span class="radar-ctrl"><button id="radar-play" class="radar-play" type="button" aria-label="Lecture/pause">⏸</button><span id="radar-time" class="radar-time"></span></span>
+            </div>
+            <div id="radar-map" class="radar-map"></div>
+        </section>
+
+        <div class="grid-2">
+            <!-- Vent spécialisé -->
+            <section class="card">
+                <div class="section-head">→ Vent</div>
+                <div class="wind-body">
+                    <div class="wind-rose" id="wind-rose"></div>
+                    <div class="wind-info">
+                        <div class="wind-beaufort" id="wind-beaufort">—</div>
+                        <div class="wind-levels" id="wind-levels"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Soleil, jour & lune -->
+            <section class="card">
+                <div class="section-head">→ Soleil, jour &amp; lune</div>
+                <div class="sun-grid">
+                    <div class="sg"><span>Lever</span><b id="sun-rise">—</b></div>
+                    <div class="sg"><span>Coucher</span><b id="sun-set">—</b></div>
+                    <div class="sg"><span>Durée du jour</span><b id="sun-daylight">—</b></div>
+                    <div class="sg"><span>Ensoleillement</span><b id="sun-sunshine">—</b></div>
+                    <div class="sg"><span>Heure dorée (matin)</span><b id="golden-am">—</b></div>
+                    <div class="sg"><span>Heure dorée (soir)</span><b id="golden-pm">—</b></div>
+                    <div class="sg"><span>Heure bleue (matin)</span><b id="blue-am">—</b></div>
+                    <div class="sg"><span>Heure bleue (soir)</span><b id="blue-pm">—</b></div>
+                </div>
+                <div class="moon"><span class="moon-icon" id="moon-icon">🌑</span><span id="moon-phase">—</span></div>
+            </section>
+        </div>
+
+        <!-- Détails -->
+        <section class="card">
+            <div class="section-head">→ Détails</div>
+            <div class="details-grid" id="details-grid"></div>
+        </section>
+
+        <!-- Comparaison de modèles -->
+        <section class="card" id="models-card">
+            <div class="section-head">→ Comparaison de modèles — température (96 h)</div>
+            <div class="models-legend" id="models-legend"></div>
+            <div class="chart-wrap" id="models-chart"></div>
+            <p class="card-foot">Plus les courbes divergent, plus la prévision est incertaine.</p>
+        </section>
+
+        <!-- Climat vs normales -->
+        <section class="card" id="climate-card">
+            <div class="section-head">→ Climat — aujourd'hui vs normale de saison</div>
+            <div class="chart-wrap center" id="climate-anomaly"></div>
+            <p class="card-foot" id="climate-text">—</p>
+        </section>
+
+        <footer>
+            Données : <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> ·
+            radar <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a> ·
+            vigilance <a href="https://meteofrance.com" target="_blank" rel="noopener">Météo-France</a> ·
+            maj <span id="updated">—</span><br>
+            Projet indépendant. Informatif, sans valeur sanitaire officielle. Aucune donnée personnelle collectée.
+        </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
