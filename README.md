@@ -36,4 +36,4 @@ GitHub Pages depuis `main` (racine), `.nojekyll`. Servi à `https://leo-grnd.git
 
 ## Licence
 
-MIT — voir [LICENSE](LICENSE).
+MIT — voir la [LICENSE](LICENSE).
